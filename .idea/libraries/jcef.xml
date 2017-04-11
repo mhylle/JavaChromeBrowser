@@ -1,0 +1,17 @@
+<component name="libraryTable">
+  <library name="jcef">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/jcef/gluegen-rt-natives-windows-amd64.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jcef/gluegen-rt.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jcef/jcef-tests.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jcef/jcef.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jcef/jogl-all-natives-windows-amd64.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jcef/jogl-all.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <NATIVE>
+      <root url="file://$PROJECT_DIR$/jcef/lib/win64" />
+    </NATIVE>
+    <SOURCES />
+  </library>
+</component>
