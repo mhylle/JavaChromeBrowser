@@ -29,28 +29,28 @@ public class ChromeBrowser extends JFrame
     // OSR mode is enabled by default on Linux.
     // and disabled by default on Windows and Mac OS X.
     boolean osrEnabledArg = OS.isLinux();
-    String cookiePath = null;
-    for (String arg : args) {
-      arg = arg.toLowerCase();
-      if (!OS.isLinux() && arg.equals("--off-screen-rendering-enabled")) {
-        osrEnabledArg = true;
-      } else if (arg.startsWith("--cookie-path=")) {
-        cookiePath = arg.substring("--cookie-path=".length());
-        File testPath = new File(cookiePath);
-        if (!testPath.isDirectory() || !testPath.canWrite()) {
-          System.out.println("Can't use " + cookiePath + " as cookie directory. Check if it exists and if it is writable");
-          cookiePath = null;
-        } else {
-          System.out.println("Storing cookies in " + cookiePath);
-        }
-      }
-    }
+//    String cookiePath = null;
+//    for (String arg : args) {
+//      arg = arg.toLowerCase();
+//      if (!OS.isLinux() && arg.equals("--off-screen-rendering-enabled")) {
+//        osrEnabledArg = true;
+//      } else if (arg.startsWith("--cookie-path=")) {
+//        cookiePath = arg.substring("--cookie-path=".length());
+//        File testPath = new File(cookiePath);
+//        if (!testPath.isDirectory() || !testPath.canWrite()) {
+//          System.out.println("Can't use " + cookiePath + " as cookie directory. Check if it exists and if it is writable");
+//          cookiePath = null;
+//        } else {
+//          System.out.println("Storing cookies in " + cookiePath);
+//        }
+//      }
+//    }
 
     System.out.println("Offscreen rendering " + (osrEnabledArg ? "enabled" : "disabled"));
 
     // MainFrame keeps all the knowledge to display the embedded browser
     // frame.
-    final ChromeBrowser frame = new ChromeBrowser(osrEnabledArg, cookiePath, args);
+    final ChromeBrowser frame = new ChromeBrowser(osrEnabledArg, "c:/temp/cookies", args);
     frame.addWindowListener(new WindowAdapter()
     {
       @Override
@@ -106,14 +106,14 @@ public class ChromeBrowser extends JFrame
     //    For each handler (with more than one method) adapter
     //    classes exists. So you don't need to override methods
     //    you're not interested in.
-    DownloadDialog downloadDialog = new DownloadDialog(this);
-    client_.addContextMenuHandler(new ContextMenuHandler(this));
-    client_.addDownloadHandler(downloadDialog);
-    client_.addDragHandler(new DragHandler());
-    client_.addGeolocationHandler(new GeolocationHandler(this));
-    client_.addJSDialogHandler(new JSDialogHandler());
-    client_.addKeyboardHandler(new KeyboardHandler());
-    client_.addRequestHandler(new RequestHandler(this));
+//    DownloadDialog downloadDialog = new DownloadDialog(this);
+//    client_.addContextMenuHandler(new ContextMenuHandler(this));
+//    client_.addDownloadHandler(downloadDialog);
+//    client_.addDragHandler(new DragHandler());
+//    client_.addGeolocationHandler(new GeolocationHandler(this));
+//    client_.addJSDialogHandler(new JSDialogHandler());
+//    client_.addKeyboardHandler(new KeyboardHandler());
+//    client_.addRequestHandler(new RequestHandler(this));
 
     //    Beside the normal handler instances, we're registering a MessageRouter
     //    as well. That gives us the opportunity to reply to JavaScript method
@@ -128,26 +128,26 @@ public class ChromeBrowser extends JFrame
     // 2.1) We're overriding CefDisplayHandler as nested anonymous class
     //      to update our address-field, the title of the panel as well
     //      as for updating the status-bar on the bottom of the browser
-    client_.addDisplayHandler(new CefDisplayHandlerAdapter()
-    {
-      @Override
-      public void onAddressChange(CefBrowser browser, String url)
-      {
-        control_pane_.setAddress(browser, url);
-      }
-
-      @Override
-      public void onTitleChange(CefBrowser browser, String title)
-      {
-        setTitle(title);
-      }
-
-      @Override
-      public void onStatusMessage(CefBrowser browser, String value)
-      {
-        status_panel_.setStatusText(value);
-      }
-    });
+//    client_.addDisplayHandler(new CefDisplayHandlerAdapter()
+//    {
+//      @Override
+//      public void onAddressChange(CefBrowser browser, String url)
+//      {
+//        control_pane_.setAddress(browser, url);
+//      }
+//
+//      @Override
+//      public void onTitleChange(CefBrowser browser, String title)
+//      {
+//        setTitle(title);
+//      }
+//
+//      @Override
+//      public void onStatusMessage(CefBrowser browser, String value)
+//      {
+//        status_panel_.setStatusText(value);
+//      }
+//    });
 
     // 2.2) To disable/enable navigation buttons and to display a prgress bar
     //      which indicates the load state of our website, we're overloading
@@ -155,42 +155,42 @@ public class ChromeBrowser extends JFrame
     //      load handler is responsible to deal with (load) errors as well.
     //      For example if you navigate to a URL which does not exist, the
     //      browser will show up an error message.
-    client_.addLoadHandler(new CefLoadHandlerAdapter()
-    {
-      @Override
-      public void onLoadingStateChange(CefBrowser browser,
-                                       boolean isLoading,
-                                       boolean canGoBack,
-                                       boolean canGoForward)
-      {
-        control_pane_.update(browser, isLoading, canGoBack, canGoForward);
-        status_panel_.setIsInProgress(isLoading);
-
-        if (!isLoading && !errorMsg_.isEmpty()) {
-          browser.loadString(errorMsg_, control_pane_.getAddress());
-          errorMsg_ = "";
-        }
-      }
-
-      @Override
-      public void onLoadError(CefBrowser browser,
-                              int frameIdentifer,
-                              ErrorCode errorCode,
-                              String errorText,
-                              String failedUrl)
-      {
-        if (errorCode != ErrorCode.ERR_NONE && errorCode != ErrorCode.ERR_ABORTED) {
-          errorMsg_ = "<html><head>";
-          errorMsg_ += "<title>Error while loading</title>";
-          errorMsg_ += "</head><body>";
-          errorMsg_ += "<h1>" + errorCode + "</h1>";
-          errorMsg_ += "<h3>Failed to load " + failedUrl + "</h3>";
-          errorMsg_ += "<p>" + (errorText == null ? "" : errorText) + "</p>";
-          errorMsg_ += "</body></html>";
-          browser.stopLoad();
-        }
-      }
-    });
+//    client_.addLoadHandler(new CefLoadHandlerAdapter()
+//    {
+//      @Override
+//      public void onLoadingStateChange(CefBrowser browser,
+//                                       boolean isLoading,
+//                                       boolean canGoBack,
+//                                       boolean canGoForward)
+//      {
+//        control_pane_.update(browser, isLoading, canGoBack, canGoForward);
+//        status_panel_.setIsInProgress(isLoading);
+//
+//        if (!isLoading && !errorMsg_.isEmpty()) {
+//          browser.loadString(errorMsg_, control_pane_.getAddress());
+//          errorMsg_ = "";
+//        }
+//      }
+//
+//      @Override
+//      public void onLoadError(CefBrowser browser,
+//                              int frameIdentifer,
+//                              ErrorCode errorCode,
+//                              String errorText,
+//                              String failedUrl)
+//      {
+//        if (errorCode != ErrorCode.ERR_NONE && errorCode != ErrorCode.ERR_ABORTED) {
+//          errorMsg_ = "<html><head>";
+//          errorMsg_ += "<title>Error while loading</title>";
+//          errorMsg_ += "</head><body>";
+//          errorMsg_ += "<h1>" + errorCode + "</h1>";
+//          errorMsg_ += "<h3>Failed to load " + failedUrl + "</h3>";
+//          errorMsg_ += "<p>" + (errorText == null ? "" : errorText) + "</p>";
+//          errorMsg_ += "</body></html>";
+//          browser.stopLoad();
+//        }
+//      }
+//    });
 
     // 3) Before we can display any content, we require an instance of
     //    CefBrowser itself by calling createBrowser() on the CefClient.
@@ -220,27 +220,27 @@ public class ChromeBrowser extends JFrame
 
     //    Last but not least we're setting up the UI for this example implementation.
     getContentPane().add(createContentPanel(), BorderLayout.CENTER);
-    tests.detailed.ui.MenuBar menuBar = new tests.detailed.ui.MenuBar(this,
-        browser_,
-        control_pane_,
-        downloadDialog,
-        cookieManager_);
+//    tests.detailed.ui.MenuBar menuBar = new tests.detailed.ui.MenuBar(this,
+//        browser_,
+//        control_pane_,
+//        downloadDialog,
+//        cookieManager_);
 
-    menuBar.addBookmark("Binding Test", "client://tests/binding_test.html");
-    menuBar.addBookmark("Binding Test 2", "client://tests/binding_test2.html");
-    menuBar.addBookmark("Download Test", "http://cefbuilds.com");
-    menuBar.addBookmark("Geolocation Test", "http://slides.html5rocks.com/#geolocation");
-    menuBar.addBookmark("Login Test (username:pumpkin, password:pie)", "http://www.colostate.edu/~ric/protect/your.html");
-    menuBar.addBookmark("Certificate-error Test", "https://www.k2go.de");
-    menuBar.addBookmark("Resource-Handler Test", "http://www.foo.bar/");
-    menuBar.addBookmark("Scheme-Handler Test 1: (scheme \"client\")", "client://tests/handler.html");
-    menuBar.addBookmark("Scheme-Handler Test 2: (scheme \"search\")", "search://do a barrel roll/");
-    menuBar.addBookmark("Spellcheck test", "client://tests/spellcheck.html");
-    menuBar.addBookmark("Test local Storage", "client://tests/localstorage.html");
-    menuBar.addBookmarkSeparator();
-    menuBar.addBookmark("javachromiumembedded", "https://bitbucket.org/chromiumembedded/java-cef");
-    menuBar.addBookmark("chromiumembedded", "https://bitbucket.org/chromiumembedded/cef");
-    setJMenuBar(menuBar);
+//    menuBar.addBookmark("Binding Test", "client://tests/binding_test.html");
+//    menuBar.addBookmark("Binding Test 2", "client://tests/binding_test2.html");
+//    menuBar.addBookmark("Download Test", "http://cefbuilds.com");
+//    menuBar.addBookmark("Geolocation Test", "http://slides.html5rocks.com/#geolocation");
+//    menuBar.addBookmark("Login Test (username:pumpkin, password:pie)", "http://www.colostate.edu/~ric/protect/your.html");
+//    menuBar.addBookmark("Certificate-error Test", "https://www.k2go.de");
+//    menuBar.addBookmark("Resource-Handler Test", "http://www.foo.bar/");
+//    menuBar.addBookmark("Scheme-Handler Test 1: (scheme \"client\")", "client://tests/handler.html");
+//    menuBar.addBookmark("Scheme-Handler Test 2: (scheme \"search\")", "search://do a barrel roll/");
+//    menuBar.addBookmark("Spellcheck test", "client://tests/spellcheck.html");
+//    menuBar.addBookmark("Test local Storage", "client://tests/localstorage.html");
+//    menuBar.addBookmarkSeparator();
+//    menuBar.addBookmark("javachromiumembedded", "https://bitbucket.org/chromiumembedded/java-cef");
+//    menuBar.addBookmark("chromiumembedded", "https://bitbucket.org/chromiumembedded/cef");
+//    setJMenuBar(menuBar);
   }
 
   private JPanel createContentPanel()
